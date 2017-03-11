@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
@@ -98,7 +99,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
                 int position = getAdapterPosition();
                 String mp3URL = teds.get(position).getMp3();
-                main.playStream(mp3URL);
+                try {
+                    main.playStream(mp3URL);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }
 
