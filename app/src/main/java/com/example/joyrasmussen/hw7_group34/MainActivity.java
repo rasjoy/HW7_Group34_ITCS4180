@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
     public void play(int index) throws IOException {
         if(teds.get(index).getMp3() != null){
-         
+
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setDataSource(teds.get(index).getMp3());
