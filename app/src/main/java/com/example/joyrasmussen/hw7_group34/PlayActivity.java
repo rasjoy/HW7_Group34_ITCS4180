@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -26,13 +27,14 @@ public class PlayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
         ted = (TED) getIntent().getSerializableExtra(MainActivity.TED_PLAY);
+       // Log.d("play", ted.getTitle());
         descript = (TextView) findViewById(R.id.playDescription);
         title = (TextView) findViewById(R.id.episodeTitle);
         duration = (TextView) findViewById(R.id.playDuration);
         pubDate = (TextView) findViewById(R.id.playPubDate);
         image = (ImageView) findViewById(R.id.imagePlay);
         progressBar = (ProgressBar) findViewById(R.id.playProgress);
-
+        setTed();
 
     }
 

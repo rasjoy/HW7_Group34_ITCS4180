@@ -174,9 +174,12 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     @Override
     protected void onStop() {
         super.onStop();
+        if(mediaController != null){
         mediaController.hide();
+        }if(mediaPlayer != null){
         mediaPlayer.stop();
         mediaPlayer.release();
+        }
     }
     public boolean onTouchEvent(MotionEvent event) {
         //the MediaController will hide after 3 seconds - tap the screen to make it appear again

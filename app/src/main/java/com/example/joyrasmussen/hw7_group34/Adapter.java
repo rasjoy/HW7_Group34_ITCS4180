@@ -86,17 +86,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
 
             if(view.getId() == imageButton.getId()){
-
-                int position = getAdapterPosition();
-
-                String mp3URL = teds.get(position).getMp3();
-
-                Intent i = new Intent(view.getContext(), PlayActivity.class);
-                i.putExtra("mp3", mp3URL);
-                view.getContext().startActivity(i);
-
-            } else {
-
                 int position = getAdapterPosition();
                 String mp3URL = teds.get(position).getMp3();
                 try {
@@ -104,6 +93,16 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+
+
+            } else {
+                int position = getAdapterPosition();
+                //Log.d("Onclick", teds.get(position).getTitle());
+                main.onStop();
+                Intent i = new Intent(view.getContext(), PlayActivity.class);
+                i.putExtra(MainActivity.TED_PLAY, teds.get(position));
+                view.getContext().startActivity(i);
 
             }
 
