@@ -1,9 +1,12 @@
 package com.example.joyrasmussen.hw7_group34;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,10 +16,13 @@ import java.util.ArrayList;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
-    ArrayList<TED> teds;
+    public static ArrayList<TED> teds;
+    static MainActivity main;
 
-    public Adapter(ArrayList<TED> teds) {
+    public Adapter(ArrayList<TED> teds, MainActivity main) {
+
         this.teds = teds;
+        this.main = main;
     }
 
     @Override
@@ -53,11 +59,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
         }
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView image;
         public TextView dateTextView;
         public TextView titleTextView;
+        public ImageButton imageButton;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -65,6 +72,35 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
             image = (ImageView) itemView.findViewById(R.id.gridImageView);
             dateTextView = (TextView) itemView.findViewById(R.id.listDateTitleTextView);
             titleTextView = (TextView) itemView.findViewById(R.id.gridTitleTextView);
+            imageButton = (ImageButton) itemView.findViewById(R.id.listImageButton);
+
+            itemView.setOnClickListener(this);
+            imageButton.setOnClickListener(this);
+
+
+        }
+
+        @Override
+        public void onClick(View view) {
+
+
+            if(view.getId() == imageButton.getId()){
+
+                int position = getAdapterPosition();
+
+                String mp3URL = teds.get(position).getMp3();
+
+                Intent i = new Intent(view.getContext(), PlayActivity.class);
+                i.putExtra("mp3", mp3URL);
+                view.getContext().startActivity(i);
+
+            } else {
+
+                int position = getAdapterPosition();
+                String mp3URL = teds.get(position).getMp3();
+                main.playStream(mp3URL);
+
+            }
 
         }
     }

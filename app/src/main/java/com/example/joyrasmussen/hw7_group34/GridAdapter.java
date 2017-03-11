@@ -11,7 +11,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class GridAdapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
+public class GridAdapter extends RecyclerView.Adapter<GridAdapter.MyGridViewHolder> {
 
     ArrayList<TED> teds;
 
@@ -20,20 +20,20 @@ public class GridAdapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
     }
 
     @Override
-    public Adapter.MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public GridAdapter.MyGridViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
 
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(
                 R.layout.grid_item,
                 viewGroup,
                 false);
 
-        Adapter.MyViewHolder vh = new Adapter.MyViewHolder(v);
+        GridAdapter.MyGridViewHolder vh = new GridAdapter.MyGridViewHolder(v);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(Adapter.MyViewHolder viewHolder, int position) {
-        
+    public void onBindViewHolder(GridAdapter.MyGridViewHolder viewHolder, int position) {
+
         String imageURL = teds.get(position).getImage();
         Picasso.with(viewHolder.image.getContext()).load(imageURL).into(viewHolder.image);
 
@@ -45,13 +45,13 @@ public class GridAdapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
         return teds.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyGridViewHolder extends RecyclerView.ViewHolder {
 
         ImageView image;
         TextView titleTextView;
 
 
-        public MyViewHolder(View itemView) {
+        public MyGridViewHolder(View itemView) {
             super(itemView);
 
             image = (ImageView) itemView.findViewById(R.id.gridImageView);

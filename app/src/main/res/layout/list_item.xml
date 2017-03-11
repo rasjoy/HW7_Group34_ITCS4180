@@ -37,7 +37,7 @@
             app:srcCompat="@mipmap/ic_launcher" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/listImageButton"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_below="@+id/listDateTitleTextView"
@@ -50,9 +50,9 @@
             android:id="@+id/playTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageButton"
-            android:layout_toEndOf="@+id/imageButton"
-            android:layout_toRightOf="@+id/imageButton"
+            android:layout_alignBottom="@+id/listImageButton"
+            android:layout_toEndOf="@+id/listImageButton"
+            android:layout_toRightOf="@+id/listImageButton"
             android:text="@string/playNow" />
 
     </RelativeLayout>

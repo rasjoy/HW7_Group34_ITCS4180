@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Default layout is list
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        RecyclerView.Adapter adapter = new Adapter(teds);
+        RecyclerView.Adapter adapter = new Adapter(teds, this);
         recyclerView.setAdapter(adapter);
 
         currentLayout = "list";
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 currentLayout = "grid";
             } else {
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
-                RecyclerView.Adapter adapter = new Adapter(teds);
+                RecyclerView.Adapter adapter = new Adapter(teds, this);
                 recyclerView.setAdapter(adapter);
                 currentLayout = "list";
             }
@@ -106,6 +106,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
+
+    }
+
+    public void playStream(String url){
 
     }
 }
