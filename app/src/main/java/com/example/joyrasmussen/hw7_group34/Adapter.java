@@ -1,6 +1,5 @@
 package com.example.joyrasmussen.hw7_group34;
 
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
@@ -64,9 +62,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            image = (ImageView) itemView.findViewById(R.id.listImageView);
+            image = (ImageView) itemView.findViewById(R.id.gridImageView);
             dateTextView = (TextView) itemView.findViewById(R.id.listDateTitleTextView);
-            titleTextView = (TextView) itemView.findViewById(R.id.listTitleTextView);
+            titleTextView = (TextView) itemView.findViewById(R.id.gridTitleTextView);
 
         }
     }

@@ -34,8 +34,10 @@ public class GridAdapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(Adapter.MyViewHolder viewHolder, int position) {
         
+        String imageURL = teds.get(position).getImage();
+        Picasso.with(viewHolder.image.getContext()).load(imageURL).into(viewHolder.image);
 
-       // Picasso.with(viewHolder.image.getContext()).load(imageURL).into(viewHolder.image);
+        viewHolder.titleTextView.setText(teds.get(position).getTitle());
     }
 
     @Override
@@ -44,14 +46,17 @@ public class GridAdapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        
+
+        ImageView image;
+        TextView titleTextView;
+
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
-//            image = (ImageView) itemView.findViewById(R.id.listImageView);
-//            dateTextView = (TextView) itemView.findViewById(R.id.listDateTitleTextView);
-//            titleTextView = (TextView) itemView.findViewById(R.id.listTitleTextView);
+            image = (ImageView) itemView.findViewById(R.id.gridImageView);
+            titleTextView = (TextView) itemView.findViewById(R.id.gridTitleTextView);
+
 
         }
     }
