@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,6 +38,15 @@ public class MainActivity extends AppCompatActivity {
     public void tedArrayList(ArrayList<TED> list){
         teds = list;
         Log.d( "tedArrayList: ", teds.toString());
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recylcerView);
+        recyclerView.setHasFixedSize(true);
+
+        //Default layout is list
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView.Adapter adapter = new Adapter(teds);
+        recyclerView.setAdapter(adapter);
+
     }
 
     @Override
