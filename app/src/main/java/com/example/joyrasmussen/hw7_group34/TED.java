@@ -1,5 +1,6 @@
 package com.example.joyrasmussen.hw7_group34;
 
+import android.util.Log;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,7 +13,7 @@ import java.util.Date;
 public class TED {
 
     String title, description, image, duration, mp3;
-    Date date;
+    String date;
 
     public String getTitle() {
         return title;
@@ -54,14 +55,20 @@ public class TED {
         this.mp3 = mp3;
     }
 
-    public Date getDate() {
+    public String getDate() {
 
         return date;
     }
 
-    public void setDate(String date) throws ParseException {
+    public void setDate(String datez) throws ParseException {
+        //Fri, 10 Mar 2017 00:01:17 -0500
+        DateFormat sdfFrom =   new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z");
+                //new SimpleDateFormat("EEE, DD MMM yyy hh:mm:ss 'Z'");
         DateFormat sdf = new SimpleDateFormat("EEE, dd, MMM yyyy");
-        this.date = sdf.parse(date);
+
+        Date from = sdfFrom.parse(datez);
+        Log.d("setDate: ", from.toString());
+        this.date = sdf.format(sdfFrom.parse(datez));
     }
 
     public String toString(){

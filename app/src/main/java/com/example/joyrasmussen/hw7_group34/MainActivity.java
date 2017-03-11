@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void tedArrayList(ArrayList<TED> list){
         teds = list;
-        //Log.d( "tedArrayList: ", teds.toString());
+       // Log.d( "tedArrayList: ", teds.toString());
     }
 
     @Override

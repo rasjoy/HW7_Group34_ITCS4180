@@ -1,5 +1,7 @@
 package com.example.joyrasmussen.hw7_group34;
 
+import android.util.Log;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -38,7 +40,7 @@ public class TedUtil {
                                     ted.setDescription(parser.nextText().trim());
                                 }
                                 break;
-                            case "pubdate":
+                            case "pubDate":
                                 ted.setDate(parser.nextText().trim());
                                 break;
                             case "itunes:image":
