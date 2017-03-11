@@ -4,4 +4,7 @@
     <string name="action_settings"></string>
     <string name="sync">Switch View</string>
     <string name="title_activity_play">PlayActivity</string>
+    <string name="description">Description:</string>
+    <string name="pubDate">Publication Date:</string>
+    <string name="dur">Duration:</string>
 </resources>

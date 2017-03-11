@@ -15,10 +15,12 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     ArrayList<TED> teds;
     final static String URL = "https://www.npr.org/rss/podcast.php?id=510298";
+    final static String TED_PLAY = "TED";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         new TedAsync(this).execute(URL);
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setIcon(R.drawable.ted_icon);
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menuz, menu);
+
         return true;
     }
 
@@ -50,8 +53,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d("WoRk", "onOptionsItemSelected: ");
         if(item.getItemId() == R.id.switchView){
             //this will cause the recyclerview change.
 

@@ -1,6 +1,8 @@
 package com.example.joyrasmussen.hw7_group34;
 
 import android.util.Log;
+
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,7 +12,7 @@ import java.util.Date;
  * Created by joyrasmussen on 3/11/17.
  */
 
-public class TED {
+public class TED implements Serializable {
 
     String title, description, image, duration, mp3;
     String date;
