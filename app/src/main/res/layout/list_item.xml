@@ -13,25 +13,25 @@
             android:id="@+id/listDateTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/listTitleTextView"
-            android:layout_toEndOf="@+id/listImageView"
-            android:layout_toRightOf="@+id/listImageView"
+            android:layout_below="@+id/gridTitleTextView"
+            android:layout_toEndOf="@+id/gridImageView"
+            android:layout_toRightOf="@+id/gridImageView"
             android:text="TextView"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/listTitleTextView"
+            android:id="@+id/gridTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/listImageView"
-            android:layout_toRightOf="@+id/listImageView"
+            android:layout_toEndOf="@+id/gridImageView"
+            android:layout_toRightOf="@+id/gridImageView"
             android:text="Episode Title"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="22sp" />
 
         <ImageView
-            android:id="@+id/listImageView"
+            android:id="@+id/gridImageView"
             android:layout_width="70dp"
             android:layout_height="70dp"
             app:srcCompat="@mipmap/ic_launcher" />
@@ -41,8 +41,8 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_below="@+id/listDateTitleTextView"
-            android:layout_toEndOf="@+id/listImageView"
-            android:layout_toRightOf="@+id/listImageView"
+            android:layout_toEndOf="@+id/gridImageView"
+            android:layout_toRightOf="@+id/gridImageView"
             android:background="@android:color/darker_gray"
             app:srcCompat="@android:drawable/ic_media_play" />
 
