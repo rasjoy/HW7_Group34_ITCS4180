@@ -36,10 +36,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(MyViewHolder viewHolder, int position) {
 
-        //String dateText = "Posted: " + teds.get(position).getDate().toString();
+        String dateText = "Posted: " + teds.get(position).getDate();
 
         viewHolder.titleTextView.setText(teds.get(position).getTitle());
-        //viewHolder.dateTextView.setText(dateText);
+        viewHolder.dateTextView.setText(dateText);
 
         String imageURL = teds.get(position).getImage();
 
@@ -48,10 +48,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
     @Override
     public int getItemCount() {
-        if(teds != null) {
+        if (teds != null) {
             return teds.size();
-        }
-        else{
+        } else {
             return -1;
         }
     }
@@ -61,7 +60,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
         public ImageView image;
         public TextView dateTextView;
         public TextView titleTextView;
-        
+
         public MyViewHolder(View itemView) {
             super(itemView);
 
