@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
         //Default layout is list
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        RecyclerView.Adapter adapter = new Adapter(teds);
+        RecyclerView.Adapter adapter = new Adapter(teds, this);
         recyclerView.setAdapter(adapter);
 
         currentLayout = "list";
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
                 currentLayout = "grid";
             } else {
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
-                RecyclerView.Adapter adapter = new Adapter(teds);
+                RecyclerView.Adapter adapter = new Adapter(teds, this);
                 recyclerView.setAdapter(adapter);
                 currentLayout = "list";
             }
@@ -124,12 +124,13 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
     }
 
-    public void play(int index) throws IOException {
-        if(teds.get(index).getMp3() != null){
+
+    public void playStream(String url) throws IOException {
+
 
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mediaPlayer.setDataSource(teds.get(index).getMp3());
+            mediaPlayer.setDataSource(url);
             mediaPlayer.prepareAsync();
             mediaController = new MediaController(this);
 
@@ -166,10 +167,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
             });
             mediaPlayer.setScreenOnWhilePlaying(true);
 
-        }
-        else{
-            Toast.makeText(this, "This podcast doesn't have a link,", Toast.LENGTH_LONG).show();
-        }
+
     }
 
 
@@ -238,5 +236,6 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
             mediaPlayer.release();
         }
         super.onDestroy();
-    }
+
+}
 }
