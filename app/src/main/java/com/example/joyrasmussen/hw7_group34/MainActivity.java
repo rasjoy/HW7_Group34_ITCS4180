@@ -132,7 +132,10 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setDataSource(url);
             mediaPlayer.prepareAsync();
-            mediaController = new MediaController(this);
+            mediaController = new MediaController(this){
+                @Override
+                public void hide(){}
+            };
 
             mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
                 @Override
@@ -175,10 +178,10 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     protected void onStop() {
         super.onStop();
         if(mediaController != null){
-        mediaController.hide();
+             mediaController.hide();
         }if(mediaPlayer != null){
-        mediaPlayer.stop();
-        mediaPlayer.release();
+
+            mediaPlayer.release();
         }
     }
     public boolean onTouchEvent(MotionEvent event) {
@@ -187,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         return false;
     }
 
-    //--MediaPlayerControl methods----------------------------------------------------
+
     public void start() {
         mediaPlayer.start();
     }
@@ -201,7 +204,10 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     }
 
     public int getCurrentPosition() {
-        return mediaPlayer.getCurrentPosition();
+        if(mediaPlayer != null) {
+            return mediaPlayer.getCurrentPosition();
+        }
+        else{ return -1;}
     }
 
     public void seekTo(int i) {
@@ -209,7 +215,11 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     }
 
     public boolean isPlaying() {
-        return mediaPlayer.isPlaying();
+        if(mediaPlayer != null) {
+            return mediaPlayer.isPlaying();
+        }else{
+            return false;
+        }
     }
 
     public int getBufferPercentage() {
@@ -227,6 +237,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     public boolean canSeekForward() {
         return true;
     }
+
 
     @Override
     public int getAudioSessionId() {
