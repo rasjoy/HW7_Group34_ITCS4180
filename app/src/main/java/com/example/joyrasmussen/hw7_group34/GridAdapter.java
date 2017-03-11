@@ -1,22 +1,27 @@
 package com.example.joyrasmussen.hw7_group34;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GridAdapter extends RecyclerView.Adapter<GridAdapter.MyGridViewHolder> {
 
-    ArrayList<TED> teds;
+    static ArrayList<TED> teds;
+    static MainActivity main;
 
-    public GridAdapter(ArrayList<TED> teds) {
+    public GridAdapter(ArrayList<TED> teds, MainActivity main) {
         this.teds = teds;
+        this.main = main;
     }
 
     @Override
@@ -45,10 +50,11 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.MyGridViewHold
         return teds.size();
     }
 
-    public static class MyGridViewHolder extends RecyclerView.ViewHolder {
+    public static class MyGridViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView image;
         TextView titleTextView;
+        ImageButton imageButton;
 
 
         public MyGridViewHolder(View itemView) {
@@ -56,7 +62,37 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.MyGridViewHold
 
             image = (ImageView) itemView.findViewById(R.id.gridImageView);
             titleTextView = (TextView) itemView.findViewById(R.id.gridTitleTextView);
+            imageButton = (ImageButton) itemView.findViewById(R.id.gridImageButton);
 
+            itemView.setOnClickListener(this);
+            imageButton.setOnClickListener(this);
+
+
+        }
+
+        @Override
+        public void onClick(View view) {
+
+
+            if(view.getId() == imageButton.getId()){
+                int position = getAdapterPosition();
+                String mp3URL = teds.get(position).getMp3();
+                try {
+                    main.playStream(mp3URL);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            } else {
+                int position = getAdapterPosition();
+
+                main.onStop();
+                Intent i = new Intent(view.getContext(), PlayActivity.class);
+                i.putExtra(MainActivity.TED_PLAY, teds.get(position));
+                view.getContext().startActivity(i);
+
+            }
 
         }
     }

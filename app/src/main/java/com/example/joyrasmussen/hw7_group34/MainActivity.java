@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
             if(currentLayout.equals("list")) {
                 recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-                RecyclerView.Adapter adapter = new GridAdapter(teds);
+                RecyclerView.Adapter adapter = new GridAdapter(teds, this);
                 recyclerView.setAdapter(adapter);
                 currentLayout = "grid";
             } else {
