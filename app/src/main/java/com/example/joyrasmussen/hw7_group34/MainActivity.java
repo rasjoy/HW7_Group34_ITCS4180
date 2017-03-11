@@ -1,6 +1,9 @@
 package com.example.joyrasmussen.hw7_group34;
 
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,7 +14,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.widget.MediaController;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,7 +27,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MediaController.MediaPlayerControl{
     ArrayList<TED> teds;
     final static String URL = "https://www.npr.org/rss/podcast.php?id=510298";
 
@@ -29,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
 
     String currentLayout;
-
+    MediaPlayer mediaPlayer;
+    MediaController mediaController;
+    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setIcon(R.drawable.ted_icon);
         actionBar.setDisplayShowHomeEnabled(true);
-
+        handler = new Handler();
 
         recyclerView = (RecyclerView) findViewById(R.id.recylcerView);
         recyclerView.setHasFixedSize(true);
@@ -113,5 +122,121 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+    }
+
+    public void play(int index) throws IOException {
+        if(teds.get(index).getMp3() != null){
+         
+            mediaPlayer = new MediaPlayer();
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaPlayer.setDataSource(teds.get(index).getMp3());
+            mediaPlayer.prepareAsync();
+            mediaController = new MediaController(this);
+
+            mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+                @Override
+                public void onBufferingUpdate(MediaPlayer mp, int percent) {
+
+                }
+            });
+
+            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+
+                @Override
+                public void onPrepared(MediaPlayer player) {
+                    mediaController.setMediaPlayer(MainActivity.this);
+                    mediaController.setAnchorView(findViewById(R.id.activity_main));
+                    handler.post(new Runnable(){
+                        @Override
+                        public void run() {
+                            mediaController.setEnabled(true);
+                            mediaController.show();
+
+                        }
+                    });
+                  player.start();
+                }
+
+            });
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mediaPlayer.release();
+                }
+            });
+            mediaPlayer.setScreenOnWhilePlaying(true);
+
+        }
+        else{
+            Toast.makeText(this, "This podcast doesn't have a link,", Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mediaController.hide();
+        mediaPlayer.stop();
+        mediaPlayer.release();
+    }
+    public boolean onTouchEvent(MotionEvent event) {
+        //the MediaController will hide after 3 seconds - tap the screen to make it appear again
+        mediaController.show();
+        return false;
+    }
+
+    //--MediaPlayerControl methods----------------------------------------------------
+    public void start() {
+        mediaPlayer.start();
+    }
+
+    public void pause() {
+        mediaPlayer.pause();
+    }
+
+    public int getDuration() {
+        return mediaPlayer.getDuration();
+    }
+
+    public int getCurrentPosition() {
+        return mediaPlayer.getCurrentPosition();
+    }
+
+    public void seekTo(int i) {
+        mediaPlayer.seekTo(i);
+    }
+
+    public boolean isPlaying() {
+        return mediaPlayer.isPlaying();
+    }
+
+    public int getBufferPercentage() {
+        return 0;
+    }
+
+    public boolean canPause() {
+        return true;
+    }
+
+    public boolean canSeekBackward() {
+        return true;
+    }
+
+    public boolean canSeekForward() {
+        return true;
+    }
+
+    @Override
+    public int getAudioSessionId() {
+        return 0;
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(mediaPlayer != null){
+            mediaPlayer.release();
+        }
+        super.onDestroy();
     }
 }
