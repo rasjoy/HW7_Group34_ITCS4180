@@ -234,7 +234,5 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         super.onDestroy();
 
 }
-    public void playStream(String url) {
-        Log.i("play", url);
-    }
+
 }
