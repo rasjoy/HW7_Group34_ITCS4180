@@ -66,8 +66,7 @@ public class TED {
                 //new SimpleDateFormat("EEE, DD MMM yyy hh:mm:ss 'Z'");
         DateFormat sdf = new SimpleDateFormat("EEE, dd, MMM yyyy");
 
-        Date from = sdfFrom.parse(datez);
-        Log.d("setDate: ", from.toString());
+
         this.date = sdf.format(sdfFrom.parse(datez));
     }
 
