@@ -252,9 +252,9 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     @Override
     public int getCurrentPosition() {
         if (mediaPlayer != null) {
-            if (mediaPlayer.isPlaying()) {
+
                 return mediaPlayer.getCurrentPosition();
-            }
+
 
         }
         return 0;
@@ -300,7 +300,9 @@ if(mediaPlayer != null) {
     @Override
     protected void onDestroy() {
         if(mediaPlayer != null){
-            onStop();
+            mediaPlayer.stop();
+            mediaPlayer.release();
+
         }
         super.onDestroy();
 

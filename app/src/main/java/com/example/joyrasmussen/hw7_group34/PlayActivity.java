@@ -216,9 +216,9 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
     @Override
     public int getCurrentPosition() {
         if (mediaPlayer != null) {
-            if (mediaPlayer.isPlaying()) {
+
                 return mediaPlayer.getCurrentPosition();
-            }
+
 
         }
         return 0;
@@ -264,8 +264,12 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
 
     @Override
     protected void onDestroy() {
-        onStop();
-        this.finish();
+        if(mediaPlayer != null){
+            if(mediaPlayer.isPlaying()){
+                mediaPlayer.stop();
+            }
+        }
+        finish();
         super.onDestroy();
     }
 
@@ -278,11 +282,7 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
             case KeyEvent.KEYCODE_BACK:
                 if (action == KeyEvent.ACTION_UP || action == KeyEvent.ACTION_DOWN) {
                     // TODO
-                    if(mediaPlayer != null){
-                        if(mediaPlayer.isPlaying()){
-                            mediaPlayer.stop();
-                        }
-                    }
+
 
                     finish();
                 }
@@ -299,10 +299,6 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
     public void onBackPressed() {
 
         super.onBackPressed();
-        if(mediaPlayer != null){
-            onStop();
-        }
-        finish();
 
     }
 
