@@ -118,10 +118,9 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
 
 
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mediaController.setAnchorView(scroll);
         mediaPlayer.setDataSource(url);
         mediaPlayer.prepareAsync();
-        mediaController = new MediaController(this);
+
         mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
             @Override
             public void onBufferingUpdate(MediaPlayer mp, int percent) {
@@ -143,8 +142,6 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
                     public void run() {
                         mediaController.setEnabled(true);
                         mediaController.show(0);
-                        Log.d("run", "run");
-
 
                     }
                 });

@@ -135,13 +135,11 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
              super.show(0);
              }};
 
-            //this looks weird but it is the only way it works for some reason
-            mediaController.setAnchorView(recyclerView);
 
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setDataSource(url);
             mediaPlayer.prepareAsync();
-            mediaController = new MediaController(this);
+
             mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
                 @Override
                 public void onBufferingUpdate(MediaPlayer mp, int percent) {
