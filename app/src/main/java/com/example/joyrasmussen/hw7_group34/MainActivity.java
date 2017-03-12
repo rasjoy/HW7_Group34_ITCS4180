@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     RelativeLayout mainLayout;
     RecyclerView.MarginLayoutParams params;
     RelativeLayout.LayoutParams loading;
+    int currentlyPlaying;
 
 
 
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         params = (RecyclerView.MarginLayoutParams) recyclerView.getLayoutParams();
         linearLayout = (LinearLayout) findViewById(R.id.linLayout);
         mainLayout = (RelativeLayout) findViewById(R.id.activity_main);
-
+        currentlyPlaying = -1;
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -122,8 +123,9 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     }
 
     public void playStream(int i) throws IOException {
-            if(teds.get(i).getMp3() != null) {
-                final int local  = i;
+
+            if(teds.get(i).getMp3() != null && i != currentlyPlaying) {
+                currentlyPlaying = i;
                 loading = (RelativeLayout.LayoutParams) linearLayout.getLayoutParams();
                 loading.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                 linearLayout.setVisibility(View.VISIBLE);
@@ -162,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
                         mediaController.setAnchorView(findViewById(R.id.activity_main));
                         TextView titleText = new TextView(MainActivity.this);
                         titleText.setTextColor(Color.WHITE);
-                        titleText.setText(teds.get(local).getTitle());
+                        titleText.setText(teds.get(currentlyPlaying).getTitle());
                         mediaController.addView(titleText);
                         handler.post(new Runnable() {
                             @Override

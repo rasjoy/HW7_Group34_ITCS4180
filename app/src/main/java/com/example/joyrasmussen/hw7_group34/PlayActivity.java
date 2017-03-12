@@ -97,7 +97,8 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
             int dur = Integer.parseInt(ted.getDuration());
 
             duration.append(" "+ dur/60 +":"+ (dur%60) );
-        }
+        }else{duration.append(" N/A");}
+
 
         if(ted.getTitle() != null){
             title.setText(" " +ted.getTitle());
@@ -157,9 +158,7 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
                 mediaPlayer.stop();
                 mediaPlayer.reset();
                 mediaPlayer.release();
-                mediaPlayer=null;
-                // surfaceView = null;
-                // surfaceHolder = null;
+                mediaPlayer = null;
 
 
             }

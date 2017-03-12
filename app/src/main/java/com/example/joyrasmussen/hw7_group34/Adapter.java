@@ -74,7 +74,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
             dateTextView = (TextView) itemView.findViewById(R.id.listDateTitleTextView);
             titleTextView = (TextView) itemView.findViewById(R.id.gridTitleTextView);
             imageButton = (ImageButton) itemView.findViewById(R.id.listImageButton);
-
             itemView.setOnClickListener(this);
             imageButton.setOnClickListener(this);
 
@@ -89,6 +88,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
                 int position = getAdapterPosition();
 
                 try {
+                    main.onStop();
                     main.playStream(position);
                 } catch (IOException e) {
                     e.printStackTrace();

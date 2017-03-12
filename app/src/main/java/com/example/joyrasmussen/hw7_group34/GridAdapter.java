@@ -78,8 +78,9 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.MyGridViewHold
             if(view.getId() == imageButton.getId()){
                 main.onStop();
                 int position = getAdapterPosition();
-                String mp3URL = teds.get(position).getMp3();
+
                 try {
+                    main.onStop();
                     main.playStream(position);
                 } catch (IOException e) {
                     e.printStackTrace();
