@@ -40,6 +40,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.MyGridViewHold
     public void onBindViewHolder(GridAdapter.MyGridViewHolder viewHolder, int position) {
 
         String imageURL = teds.get(position).getImage();
+        Picasso.with(viewHolder.image.getContext()).cancelRequest(viewHolder.image);
         Picasso.with(viewHolder.image.getContext()).load(imageURL).into(viewHolder.image);
 
         viewHolder.titleTextView.setText(teds.get(position).getTitle());
@@ -75,6 +76,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.MyGridViewHold
 
 
             if(view.getId() == imageButton.getId()){
+                main.onStop();
                 int position = getAdapterPosition();
                 String mp3URL = teds.get(position).getMp3();
                 try {
@@ -86,7 +88,6 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.MyGridViewHold
 
             } else {
                 int position = getAdapterPosition();
-
                 main.onStop();
                 Intent i = new Intent(view.getContext(), PlayActivity.class);
                 i.putExtra(MainActivity.TED_PLAY, teds.get(position));

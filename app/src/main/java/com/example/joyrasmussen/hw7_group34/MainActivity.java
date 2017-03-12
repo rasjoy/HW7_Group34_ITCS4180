@@ -51,8 +51,11 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         actionBar.setDisplayShowHomeEnabled(true);
         handler = new Handler();
 
+        mediaController = new MediaController(this);
+
         recyclerView = (RecyclerView) findViewById(R.id.recylcerView);
         recyclerView.setHasFixedSize(true);
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -126,16 +129,11 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
 
     public void playStream(String url) throws IOException {
-
-
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setDataSource(url);
             mediaPlayer.prepareAsync();
-            mediaController = new MediaController(this){
-                @Override
-                public void hide(){}
-            };
+            mediaController = new MediaController(this);
 
             mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
                 @Override
@@ -165,7 +163,13 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    mediaPlayer.release();
+                    mediaController.hide();
+                    mp.stop();
+                    mp.reset();
+                    mp.release();
+                    mp=null;
+
+
                 }
             });
             mediaPlayer.setScreenOnWhilePlaying(true);
@@ -177,12 +181,18 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     @Override
     protected void onStop() {
         super.onStop();
-        if(mediaController != null){
-             mediaController.hide();
-        }if(mediaPlayer != null){
+        mediaController.hide();
+        if(mediaPlayer!= null) {
+            //    Log.d("Stopping", "Stopping");
+            if(mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+                mediaPlayer.reset();
+                mediaPlayer.release();
+                mediaPlayer = null;
 
-            mediaPlayer.release();
         }
+
     }
     public boolean onTouchEvent(MotionEvent event) {
         //the MediaController will hide after 3 seconds - tap the screen to make it appear again
@@ -200,16 +210,29 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     }
 
     public int getDuration() {
-        return mediaPlayer.getDuration();
-    }
-
-    public int getCurrentPosition() {
         if(mediaPlayer != null) {
-            return mediaPlayer.getCurrentPosition();
+            return mediaPlayer.getDuration();
         }
-        else{ return -1;}
+        return 0;
     }
 
+    @Override
+    public int getCurrentPosition() {
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                return mediaPlayer.getCurrentPosition();
+            }
+
+        }
+        return 0;
+    }
+
+    /* public int getCurrentPosition() {
+
+             return 0;
+
+     }
+ */
     public void seekTo(int i) {
         mediaPlayer.seekTo(i);
     }
@@ -247,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     @Override
     protected void onDestroy() {
         if(mediaPlayer != null){
-            mediaPlayer.release();
+            onStop();
         }
         super.onDestroy();
 
