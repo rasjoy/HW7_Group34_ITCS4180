@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
     public void tedArrayList(ArrayList<TED> list){
         this.teds = list;
-        sort();
+     //   sort();
 
         //Default layout is list
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -102,33 +102,6 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         }
         return super.onOptionsItemSelected(item);
     }
-
-    public void sort(){
-
-        Collections.sort(teds, new Comparator<TED>() {
-            @Override
-            public int compare(TED t1, TED t2) {
-
-                DateFormat df = new SimpleDateFormat("EEE, dd, MMM yyyy");
-
-                try {
-                    Date date1 = df.parse(t1.date);
-                    Date date2 = df.parse(t2.date);
-
-                    return date2.compareTo(date1); //most recent dates first
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                return 0;
-            }
-
-
-        });
-
-    }
-
 
     public void playStream(String url) throws IOException {
 
