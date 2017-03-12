@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -79,17 +81,10 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
             progressBar.setVisibility(View.INVISIBLE);
         }
         if(ted.getDescription() != null) {
+            descript.append(" " + ted.getDescription());
 
-            SpannableStringBuilder builder = new SpannableStringBuilder();
-
-            Spannable description = new SpannableString(ted.getDescription());
-            description.setSpan(new ForegroundColorSpan(Color.BLACK), 0, description.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            builder.append(" " +description);
-            descript.append(builder);
         }else{
-            Spannable description = new SpannableString("N/A"    );
-            description.setSpan(new ForegroundColorSpan(Color.BLACK), 0, description.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-            descript.append(" " +description);
+            descript.append("  N/A");
         }
         if(ted.getDate() != null){
             pubDate.append(" " +ted.getDate());
@@ -265,13 +260,42 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
     }
 
 
+    @Override
+    protected void onDestroy() {
+        onStop();
+        this.finish();
+        super.onDestroy();
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+
+        int action = event.getAction();
+        int keyCode = event.getKeyCode();
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                if (action == KeyEvent.ACTION_UP) {
+                    // TODO
+                    finish();
+                }
+                return true;
+            default:
+                return super.dispatchKeyEvent(event);
+        }
+
+    }
+
+
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        onStop();
-        finish();
-    }
 
+        super.onBackPressed();
+        if(mediaPlayer != null){
+            onStop();
+        }
+        finish();
+
+    }
 
 }
