@@ -136,7 +136,7 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
 
                 mediaPlayer.setScreenOnWhilePlaying(true);
                 mediaController.setMediaPlayer(PlayActivity.this);
-                mediaController.setAnchorView(scroll);
+                mediaController.setAnchorView(findViewById(R.id.activity_play));
                 loading.setVisibility(View.GONE);
                 handler.post(new Runnable(){
                     @Override
