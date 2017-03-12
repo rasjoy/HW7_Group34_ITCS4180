@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
             mediaPlayer.setDataSource(url);
             mediaPlayer.prepareAsync();
             mediaController = new MediaController(this);
-            mediaController.show();
+
             mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
                 @Override
                 public void onBufferingUpdate(MediaPlayer mp, int percent) {
@@ -184,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     @Override
     protected void onStop() {
         super.onStop();
+
         if(mediaController!=null){
             mediaController.hide();
         }
@@ -195,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
                 mediaPlayer.reset();
                 mediaPlayer.release();
                 mediaPlayer = null;
+
         }
 
     }
@@ -207,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         return false;
     }
 
-
+    //--MediaPlayerControl methods----------------------------------------------------
     public void start() {
         mediaPlayer.start();
     }
@@ -232,6 +234,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
         }
         return 0;
+
     }
 
     /* public int getCurrentPosition() {
@@ -245,11 +248,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     }
 
     public boolean isPlaying() {
-        if(mediaPlayer != null) {
-            return mediaPlayer.isPlaying();
-        }else{
-            return false;
-        }
+        return mediaPlayer.isPlaying();
     }
 
     public int getBufferPercentage() {
@@ -267,7 +266,6 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     public boolean canSeekForward() {
         return true;
     }
-
 
     @Override
     public int getAudioSessionId() {
