@@ -277,8 +277,14 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
         int keyCode = event.getKeyCode();
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
-                if (action == KeyEvent.ACTION_UP) {
+                if (action == KeyEvent.ACTION_UP || action == KeyEvent.ACTION_DOWN) {
                     // TODO
+                    if(mediaPlayer != null){
+                        if(mediaPlayer.isPlaying()){
+                            mediaPlayer.stop();
+                        }
+                    }
+
                     finish();
                 }
                 return true;

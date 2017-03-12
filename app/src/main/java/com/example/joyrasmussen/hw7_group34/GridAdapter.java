@@ -80,7 +80,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.MyGridViewHold
                 int position = getAdapterPosition();
                 String mp3URL = teds.get(position).getMp3();
                 try {
-                    main.playStream(mp3URL);
+                    main.playStream(position);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

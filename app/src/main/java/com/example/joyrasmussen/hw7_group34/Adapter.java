@@ -87,9 +87,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
             if(view.getId() == imageButton.getId()){
                 int position = getAdapterPosition();
-                String mp3URL = teds.get(position).getMp3();
+
                 try {
-                    main.playStream(mp3URL);
+                    main.playStream(position);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

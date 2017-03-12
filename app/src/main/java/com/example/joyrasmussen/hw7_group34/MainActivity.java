@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -120,74 +121,79 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         return super.onOptionsItemSelected(item);
     }
 
-    public void playStream(String url) throws IOException {
+    public void playStream(int i) throws IOException {
+            if(teds.get(i).getMp3() != null) {
+                final int local  = i;
+                loading = (RelativeLayout.LayoutParams) linearLayout.getLayoutParams();
+                loading.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                linearLayout.setVisibility(View.VISIBLE);
+                changeMargins(300);
 
-            loading = (RelativeLayout.LayoutParams) linearLayout.getLayoutParams();
-            loading.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            linearLayout.setVisibility(View.VISIBLE);
-            changeMargins(300);
+                mediaPlayer = new MediaPlayer();
 
-            mediaPlayer = new MediaPlayer();
-
-            mediaController = new MediaController(this, false){
-            @Override
-            public void show(int timeout) {
-             super.show(0);
-             }};
-
-
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mediaPlayer.setDataSource(url);
-            mediaPlayer.prepareAsync();
-
-            mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
-                @Override
-                public void onBufferingUpdate(MediaPlayer mp, int percent) {
-
-                }
-            });
-
-            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-
-                @Override
-                public void onPrepared(MediaPlayer player) {
-                   // mediaPlayer.setDisplay(surfaceHolder);
-                    mediaPlayer.setScreenOnWhilePlaying(true);
-                    mediaController.setMediaPlayer(MainActivity.this);
-                    linearLayout.setVisibility(View.INVISIBLE);
-
-                    mediaController.setAnchorView(findViewById(R.id.activity_main));
-                    handler.post(new Runnable(){
-                        @Override
-                        public void run() {
-                            mediaController.setEnabled(true);
-                            mediaController.show(0);
+                mediaController = new MediaController(this, false) {
+                    @Override
+                    public void show(int timeout) {
+                        super.show(0);
+                    }
+                };
 
 
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                mediaPlayer.setDataSource(teds.get(i).getMp3());
+                mediaPlayer.prepareAsync();
 
-                        }
-                    });
-                  player.start();
-                }
+                mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+                    @Override
+                    public void onBufferingUpdate(MediaPlayer mp, int percent) {
 
-            });
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    mediaController.hide();
-                    mediaController = null;
-                    mediaPlayer.stop();
-                    mediaPlayer.reset();
-                    mediaPlayer.release();
-                    mediaPlayer=null;
-                    changeMargins(0);
-                   // surfaceView = null;
-                   // surfaceHolder = null;
+                    }
+                });
+
+                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+
+                    @Override
+                    public void onPrepared(MediaPlayer player) {
+                        // mediaPlayer.setDisplay(surfaceHolder);
+                        mediaPlayer.setScreenOnWhilePlaying(true);
+                        mediaController.setMediaPlayer(MainActivity.this);
+                        linearLayout.setVisibility(View.INVISIBLE);
+
+                        mediaController.setAnchorView(findViewById(R.id.activity_main));
+                        TextView titleText = new TextView(MainActivity.this);
+                        titleText.setTextColor(Color.WHITE);
+                        titleText.setText(teds.get(local).getTitle());
+                        mediaController.addView(titleText);
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mediaController.setEnabled(true);
+                                mediaController.show(0);
 
 
+                            }
+                        });
+                        player.start();
+                    }
 
-                }
-            });
+                });
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        mediaController.hide();
+                        mediaController = null;
+                        mediaPlayer.stop();
+                        mediaPlayer.reset();
+                        mediaPlayer.release();
+                        mediaPlayer = null;
+                        changeMargins(0);
+                        // surfaceView = null;
+                        // surfaceHolder = null;
+
+
+                    }
+                });
+            }
     }
 
 
@@ -294,6 +300,8 @@ if(mediaPlayer != null) {
         super.onDestroy();
 
 }
+
+
 void changeMargins(int i){
     params.setMargins(0, 0, 0, i);
     recyclerView.setLayoutParams(params);
