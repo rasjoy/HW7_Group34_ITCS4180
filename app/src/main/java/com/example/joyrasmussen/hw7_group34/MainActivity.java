@@ -19,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
@@ -48,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
     LinearLayout linearLayout;
     RelativeLayout mainLayout;
+    RecyclerView.MarginLayoutParams params;
+    RelativeLayout.LayoutParams loading;
+
 
 
     @Override
@@ -59,13 +63,15 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setIcon(R.drawable.ted_icon);
         actionBar.setDisplayShowHomeEnabled(true);
+
         handler = new Handler();
 
         recyclerView = (RecyclerView) findViewById(R.id.recylcerView);
         recyclerView.setHasFixedSize(true);
-
+        params = (RecyclerView.MarginLayoutParams) recyclerView.getLayoutParams();
         linearLayout = (LinearLayout) findViewById(R.id.linLayout);
         mainLayout = (RelativeLayout) findViewById(R.id.activity_main);
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -80,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     public void tedArrayList(ArrayList<TED> list){
         this.teds = list;
 
-        linearLayout.setVisibility(View.GONE);
+        linearLayout.setVisibility(View.INVISIBLE);
         recyclerView.setVisibility(View.VISIBLE);
         mainLayout.setBackgroundColor(Color.WHITE);
 
@@ -116,14 +122,20 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
     public void playStream(String url) throws IOException {
 
-
+            loading = (RelativeLayout.LayoutParams) linearLayout.getLayoutParams();
+            loading.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            linearLayout.setVisibility(View.VISIBLE);
+            changeMargins(300);
 
             mediaPlayer = new MediaPlayer();
+
             mediaController = new MediaController(this, false){
             @Override
             public void show(int timeout) {
              super.show(0);
              }};
+
+            //this looks weird but it is the only way it works for some reason
             mediaController.setAnchorView(recyclerView);
 
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -144,12 +156,15 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
                    // mediaPlayer.setDisplay(surfaceHolder);
                     mediaPlayer.setScreenOnWhilePlaying(true);
                     mediaController.setMediaPlayer(MainActivity.this);
+                    linearLayout.setVisibility(View.INVISIBLE);
+
                     mediaController.setAnchorView(findViewById(R.id.activity_main));
                     handler.post(new Runnable(){
                         @Override
                         public void run() {
                             mediaController.setEnabled(true);
                             mediaController.show(0);
+
 
 
                         }
@@ -167,8 +182,10 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
                     mediaPlayer.reset();
                     mediaPlayer.release();
                     mediaPlayer=null;
+                    changeMargins(0);
                    // surfaceView = null;
                    // surfaceHolder = null;
+
 
 
                 }
@@ -195,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
 
         }
+
 
     }
     public boolean onTouchEvent(MotionEvent event) {
@@ -276,6 +294,11 @@ if(mediaPlayer != null) {
             onStop();
         }
         super.onDestroy();
+
+}
+void changeMargins(int i){
+    params.setMargins(0, 0, 0, i);
+    recyclerView.setLayoutParams(params);
 
 }
 }
