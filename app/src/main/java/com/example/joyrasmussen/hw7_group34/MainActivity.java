@@ -187,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
                         mediaPlayer.release();
                         mediaPlayer = null;
                         changeMargins(0);
+
                         // surfaceView = null;
                         // surfaceHolder = null;
 
@@ -200,6 +201,8 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     @Override
     protected void onStop() {
         super.onStop();
+        linearLayout.setVisibility(View.INVISIBLE);
+        changeMargins(0);
 
         if(mediaController!=null){
             mediaController.hide();
