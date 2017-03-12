@@ -1,5 +1,6 @@
 package com.example.joyrasmussen.hw7_group34;
 
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -20,6 +21,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -44,6 +46,10 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     MediaController mediaController;
     Handler handler;
 
+    LinearLayout linearLayout;
+    RelativeLayout mainLayout;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         recyclerView = (RecyclerView) findViewById(R.id.recylcerView);
         recyclerView.setHasFixedSize(true);
 
+        linearLayout = (LinearLayout) findViewById(R.id.linLayout);
+        mainLayout = (RelativeLayout) findViewById(R.id.activity_main);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -71,7 +79,10 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
     public void tedArrayList(ArrayList<TED> list){
         this.teds = list;
-     //   sort();
+
+        linearLayout.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+        mainLayout.setBackgroundColor(Color.WHITE);
 
         //Default layout is list
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -162,10 +173,6 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
                 }
             });
-
-
-
-
     }
 
 
