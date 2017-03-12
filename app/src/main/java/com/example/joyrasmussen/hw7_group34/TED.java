@@ -64,12 +64,12 @@ public class TED implements Serializable {
 
     public void setDate(String datez) throws ParseException {
         //Fri, 10 Mar 2017 00:01:17 -0500
-        DateFormat sdfFrom =   new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z");
+        //DateFormat sdfFrom =   new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z");
                 //new SimpleDateFormat("EEE, DD MMM yyy hh:mm:ss 'Z'");
-        DateFormat sdf = new SimpleDateFormat("EEE, dd, MMM yyyy");
+        //DateFormat sdf = new SimpleDateFormat("EEE, dd, MMM yyyy");
 
-
-        this.date = sdf.format(sdfFrom.parse(datez));
+        this.date = datez.substring(0, datez.length() - 15);
+        //this.date = sdf.format(sdfFrom.parse(datez));
     }
 
     public String toString(){
