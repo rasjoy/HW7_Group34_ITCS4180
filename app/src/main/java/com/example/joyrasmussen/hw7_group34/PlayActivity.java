@@ -17,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -37,6 +38,7 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
     MediaPlayer mediaPlayer;
     MediaController mediaController;
     Handler handler;
+    LinearLayout loading;
     ScrollView scroll;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +52,9 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
         pubDate = (TextView) findViewById(R.id.playPubDate);
         image = (ImageView) findViewById(R.id.imagePlay);
         progressBar = (ProgressBar) findViewById(R.id.playProgress);
-     activityLayout = (RelativeLayout) findViewById(R.id.activity_play);
+         activityLayout = (RelativeLayout) findViewById(R.id.activity_play);
         scroll = (ScrollView) findViewById(R.id.scrollView);
+        loading = (LinearLayout) findViewById(R.id.loadingEpisode);
         handler = new Handler();
         setTed();
         if(ted.getMp3() != null){
@@ -91,7 +94,9 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
         }
 
         if(ted.getDuration() != null){
-            duration.append(" " +ted.getDuration());
+            int dur = Integer.parseInt(ted.getDuration());
+
+            duration.append(" "+ dur/60 +":"+ (dur%60) );
         }
 
         if(ted.getTitle() != null){
@@ -132,6 +137,7 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
                 mediaPlayer.setScreenOnWhilePlaying(true);
                 mediaController.setMediaPlayer(PlayActivity.this);
                 mediaController.setAnchorView(scroll);
+                loading.setVisibility(View.GONE);
                 handler.post(new Runnable(){
                     @Override
                     public void run() {

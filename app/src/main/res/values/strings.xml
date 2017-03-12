@@ -8,5 +8,6 @@
     <string name="pubDate">Publication Date: </string>
     <string name="dur">Duration: </string>
     <string name="loading">Loading Episodes...</string>
+    <string name="loadEp">Loading Episode</string>
 
 </resources>
