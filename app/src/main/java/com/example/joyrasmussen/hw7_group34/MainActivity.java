@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         actionBar.setDisplayShowHomeEnabled(true);
         handler = new Handler();
 
-        mediaController = new MediaController(this);
+
 
         recyclerView = (RecyclerView) findViewById(R.id.recylcerView);
         recyclerView.setHasFixedSize(true);
@@ -129,12 +129,13 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
 
     public void playStream(String url) throws IOException {
+            mediaController = new MediaController(this);
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setDataSource(url);
             mediaPlayer.prepareAsync();
             mediaController = new MediaController(this);
-
+            mediaController.show();
             mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
                 @Override
                 public void onBufferingUpdate(MediaPlayer mp, int percent) {
@@ -164,14 +165,16 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     mediaController.hide();
-                    mp.stop();
-                    mp.reset();
-                    mp.release();
-                    mp=null;
+                    mediaController = null;
+                    mediaPlayer.stop();
+                    mediaPlayer.reset();
+                    mediaPlayer.release();
+                    mediaPlayer=null;
 
 
                 }
             });
+
             mediaPlayer.setScreenOnWhilePlaying(true);
 
 
@@ -181,7 +184,9 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     @Override
     protected void onStop() {
         super.onStop();
-        mediaController.hide();
+        if(mediaController!=null){
+            mediaController.hide();
+        }
         if(mediaPlayer!= null) {
             //    Log.d("Stopping", "Stopping");
             if(mediaPlayer.isPlaying()) {
@@ -190,13 +195,15 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
                 mediaPlayer.reset();
                 mediaPlayer.release();
                 mediaPlayer = null;
-
         }
 
     }
     public boolean onTouchEvent(MotionEvent event) {
         //the MediaController will hide after 3 seconds - tap the screen to make it appear again
-        mediaController.show();
+        if(mediaController!= null) {
+            mediaController.show();
+        }
+
         return false;
     }
 
