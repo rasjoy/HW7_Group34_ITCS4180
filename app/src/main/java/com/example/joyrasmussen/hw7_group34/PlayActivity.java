@@ -1,27 +1,41 @@
 package com.example.joyrasmussen.hw7_group34;
 
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.media.Image;
+import android.media.MediaPlayer;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-public class PlayActivity extends AppCompatActivity {
+import java.io.IOException;
+
+public class PlayActivity extends AppCompatActivity implements MediaController.MediaPlayerControl{
     TED ted;
     TextView descript, duration, pubDate, title;
     ImageView image;
     ProgressBar progressBar;
-
+    RelativeLayout activityLayout;
+    MediaPlayer mediaPlayer;
+    MediaController mediaController;
+    Handler handler;
+    ScrollView scroll;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +48,17 @@ public class PlayActivity extends AppCompatActivity {
         pubDate = (TextView) findViewById(R.id.playPubDate);
         image = (ImageView) findViewById(R.id.imagePlay);
         progressBar = (ProgressBar) findViewById(R.id.playProgress);
+     activityLayout = (RelativeLayout) findViewById(R.id.activity_play);
+        scroll = (ScrollView) findViewById(R.id.scrollView);
+        handler = new Handler();
         setTed();
+        if(ted.getMp3() != null){
+        try {
+            playStream(ted.getMp3());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        }
 
     }
 
@@ -55,31 +79,199 @@ public class PlayActivity extends AppCompatActivity {
             progressBar.setVisibility(View.INVISIBLE);
         }
         if(ted.getDescription() != null) {
+
+            SpannableStringBuilder builder = new SpannableStringBuilder();
+
             Spannable description = new SpannableString(ted.getDescription());
             description.setSpan(new ForegroundColorSpan(Color.BLACK), 0, description.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            descript.append(description);
+            builder.append(" " +description);
+            descript.append(builder);
         }else{
             Spannable description = new SpannableString("N/A"    );
-            description.setSpan(new ForegroundColorSpan(Color.BLACK), 0, description.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            descript.append(description);
+            description.setSpan(new ForegroundColorSpan(Color.BLACK), 0, description.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            descript.append(" " +description);
         }
         if(ted.getDate() != null){
-            pubDate.append(ted.getDate());
+            pubDate.append(" " +ted.getDate());
         }
 
         if(ted.getDuration() != null){
-            duration.append(ted.getDuration());
+            duration.append(" " +ted.getDuration());
         }
 
         if(ted.getTitle() != null){
-            title.setText(ted.getTitle());
+            title.setText(" " +ted.getTitle());
         }
 
     }
+
+    public void playStream(String url) throws IOException {
+
+
+
+        mediaPlayer = new MediaPlayer();
+        mediaController = new MediaController(this, false){
+            @Override
+            public void show(int timeout) {
+                super.show(0);
+            }};
+
+
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaController.setAnchorView(scroll);
+        mediaPlayer.setDataSource(url);
+        mediaPlayer.prepareAsync();
+        mediaController = new MediaController(this);
+        mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+            @Override
+            public void onBufferingUpdate(MediaPlayer mp, int percent) {
+
+            }
+        });
+
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+
+            @Override
+            public void onPrepared(MediaPlayer player) {
+
+                mediaPlayer.setScreenOnWhilePlaying(true);
+                mediaController.setMediaPlayer(PlayActivity.this);
+                mediaController.setAnchorView(scroll);
+                handler.post(new Runnable(){
+                    @Override
+                    public void run() {
+                        mediaController.setEnabled(true);
+                        mediaController.show(0);
+                        Log.d("run", "run");
+
+
+                    }
+                });
+                player.start();
+            }
+
+        });
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mediaController.hide();
+                mediaController = null;
+                mediaPlayer.stop();
+                mediaPlayer.reset();
+                mediaPlayer.release();
+                mediaPlayer=null;
+                // surfaceView = null;
+                // surfaceHolder = null;
+
+
+            }
+        });
+
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if(mediaController!=null){
+            mediaController.hide();
+            mediaController = null;
+        }
+        if(mediaPlayer!= null) {
+
+            if(mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            mediaPlayer.reset();
+            mediaPlayer.release();
+            mediaPlayer = null;
+
+
+        }
+
+    }
+    public boolean onTouchEvent(MotionEvent event) {
+        //the MediaController will hide after 3 seconds - tap the screen to make it appear again
+        if(mediaController!= null) {
+            mediaController.show(0);
+        }
+
+        return false;
+    }
+
+    //--MediaPlayerControl methods----------------------------------------------------
+    public void start() {
+        mediaPlayer.start();
+    }
+
+    public void pause() {
+        mediaPlayer.pause();
+    }
+
+    public int getDuration() {
+        if(mediaPlayer != null) {
+            return mediaPlayer.getDuration();
+        }
+        return 0;
+    }
+
+    @Override
+    public int getCurrentPosition() {
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                return mediaPlayer.getCurrentPosition();
+            }
+
+        }
+        return 0;
+
+    }
+
+
+
+    public void seekTo(int i) {
+        if(mediaPlayer != null) {
+            mediaPlayer.seekTo(i);
+        }
+    }
+
+    public boolean isPlaying() {
+        if(mediaPlayer !=null){
+            return mediaPlayer.isPlaying();
+        }
+        return false;
+    }
+
+    public int getBufferPercentage() {
+        return 0;
+    }
+
+    public boolean canPause() {
+        return true;
+    }
+
+    public boolean canSeekBackward() {
+        return true;
+    }
+
+    public boolean canSeekForward() {
+        return true;
+    }
+
+    @Override
+    public int getAudioSessionId() {
+        return 0;
+    }
+
+
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        onStop();
         finish();
     }
+
+
 }

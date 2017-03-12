@@ -31,39 +31,6 @@
         android:layout_centerHorizontal="true"
         app:srcCompat="@drawable/ic_action_refresh" />
 
-    <TextView
-        android:id="@+id/playDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/imagePlay"
-        android:layout_marginTop="21dp"
-        android:layout_weight="0.24"
-        android:text="@string/description"
-        android:textColor="@android:color/black" />
-
-    <TextView
-        android:id="@+id/playPubDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/playDescription"
-        android:layout_marginTop="13dp"
-        android:text="@string/pubDate"
-        android:textColor="@android:color/black" />
-
-    <TextView
-        android:id="@+id/playDuration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/playPubDate"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="12dp"
-        android:text="@string/dur"
-        android:textColor="@color/colorPrimaryDark" />
-
     <ProgressBar
         android:id="@+id/playProgress"
         style="?android:attr/progressBarStyle"
@@ -72,5 +39,54 @@
         android:layout_below="@+id/episodeTitle"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="52dp" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/imagePlay">
+
+        <LinearLayout
+            android:id="@+id/scrollLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/playDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/imagePlay"
+                android:layout_marginTop="21dp"
+                android:layout_weight="0.24"
+                android:bufferType="spannable"
+                android:text="@string/description"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/playPubDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/playDescription"
+                android:layout_marginTop="13dp"
+                android:text="@string/pubDate"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/playDuration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/playPubDate"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12dp"
+                android:text="@string/dur"
+                android:textColor="@color/colorPrimaryDark" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

@@ -15,6 +15,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.Toast;
 
@@ -50,8 +54,6 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         actionBar.setIcon(R.drawable.ted_icon);
         actionBar.setDisplayShowHomeEnabled(true);
         handler = new Handler();
-
-
 
         recyclerView = (RecyclerView) findViewById(R.id.recylcerView);
         recyclerView.setHasFixedSize(true);
@@ -129,13 +131,21 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
 
     public void playStream(String url) throws IOException {
-            mediaController = new MediaController(this);
+
+
+
             mediaPlayer = new MediaPlayer();
+            mediaController = new MediaController(this, false){
+            @Override
+            public void show(int timeout) {
+             super.show(0);
+             }};
+            mediaController.setAnchorView(recyclerView);
+
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setDataSource(url);
             mediaPlayer.prepareAsync();
             mediaController = new MediaController(this);
-
             mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
                 @Override
                 public void onBufferingUpdate(MediaPlayer mp, int percent) {
@@ -147,13 +157,16 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
                 @Override
                 public void onPrepared(MediaPlayer player) {
+                   // mediaPlayer.setDisplay(surfaceHolder);
+                    mediaPlayer.setScreenOnWhilePlaying(true);
                     mediaController.setMediaPlayer(MainActivity.this);
                     mediaController.setAnchorView(findViewById(R.id.activity_main));
                     handler.post(new Runnable(){
                         @Override
                         public void run() {
                             mediaController.setEnabled(true);
-                            mediaController.show();
+                            mediaController.show(0);
+
 
                         }
                     });
@@ -170,12 +183,14 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
                     mediaPlayer.reset();
                     mediaPlayer.release();
                     mediaPlayer=null;
+                   // surfaceView = null;
+                   // surfaceHolder = null;
 
 
                 }
             });
 
-            mediaPlayer.setScreenOnWhilePlaying(true);
+
 
 
     }
@@ -187,9 +202,10 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
         if(mediaController!=null){
             mediaController.hide();
+            mediaController = null;
         }
         if(mediaPlayer!= null) {
-            //    Log.d("Stopping", "Stopping");
+
             if(mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
             }
@@ -197,13 +213,14 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
                 mediaPlayer.release();
                 mediaPlayer = null;
 
+
         }
 
     }
     public boolean onTouchEvent(MotionEvent event) {
         //the MediaController will hide after 3 seconds - tap the screen to make it appear again
         if(mediaController!= null) {
-            mediaController.show();
+            mediaController.show(0);
         }
 
         return false;
@@ -237,18 +254,19 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
     }
 
-    /* public int getCurrentPosition() {
 
-             return 0;
 
-     }
- */
     public void seekTo(int i) {
-        mediaPlayer.seekTo(i);
+if(mediaPlayer != null) {
+    mediaPlayer.seekTo(i);
+}
     }
 
     public boolean isPlaying() {
-        return mediaPlayer.isPlaying();
+        if(mediaPlayer !=null){
+            return mediaPlayer.isPlaying();
+        }
+        return false;
     }
 
     public int getBufferPercentage() {
