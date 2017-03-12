@@ -267,6 +267,7 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
         if(mediaPlayer != null){
             if(mediaPlayer.isPlaying()){
                 mediaPlayer.stop();
+                mediaPlayer.release();
             }
         }
         finish();
@@ -282,7 +283,11 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
             case KeyEvent.KEYCODE_BACK:
                 if (action == KeyEvent.ACTION_UP || action == KeyEvent.ACTION_DOWN) {
                     // TODO
-
+                    if(mediaPlayer != null){
+                        if(mediaPlayer.isPlaying()){
+                            mediaPlayer.stop();
+                        }
+                    }
 
                     finish();
                 }
